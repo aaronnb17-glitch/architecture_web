@@ -1,1 +1,135 @@
 
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DEV Architecture</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #2e2a3b;
+  color: white;
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px;
+}
+
+/* CANVAS AREA */
+.canvas {
+  position: relative;
+  width: 100%;
+  height: 85vh;
+}
+
+/* NODE STYLE */
+.node {
+  position: absolute;
+  background: #3f3a52;
+  padding: 12px;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.node:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px cyan;
+}
+
+/* COLORS */
+.web { border-left: 5px solid #00d4ff; }
+.portal { border-left: 5px solid #00ff9d; }
+.server { border-left: 5px solid #ffb300; }
+.db { border-left: 5px solid #ff4d4d; }
+.nas { border-left: 5px solid #8a5cff; }
+.vdi { border-left: 5px solid #00e676; }
+.users { border-left: 5px solid #ffffff; }
+
+/* SVG LINES */
+svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+line {
+  stroke: cyan;
+  stroke-width: 2;
+  stroke-dasharray: 6;
+  animation: dash 2s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>DEV ENVIRONMENT</h1>
+
+<div class="canvas">
+
+<!-- CONNECTION LINES -->
+
+<svg>
+  <line x1="150" y1="80" x2="350" y2="180" />
+  <line x1="350" y1="180" x2="600" y2="180" />
+  <line x1="600" y1="180" x2="850" y2="180" />
+  <line x1="350" y1="180" x2="350" y2="350" />
+  <line x1="600" y1="180" x2="600" y2="350" />
+  <line x1="600" y1="350" x2="850" y2="350" />
+</svg>
+
+<!-- NODES -->
+
+<div class="node users" style="top:40px; left:50px;">
+  <b>Users</b><br>Internet
+</div>
+
+<div class="node web" style="top:150px; left:300px;">
+  <b>Web Server</b><br>
+  64GB RAM<br>16 Core<br>512 SSD
+</div>
+
+<div class="node db" style="top:150px; left:800px;">
+  <b>RDBMS</b><br>
+  128GB RAM<br>32 Core<br>1TB SSD
+</div>
+
+<div class="node portal" style="top:320px; left:300px;">
+  <b>Portal</b><br>
+  128GB RAM<br>32 Core
+</div>
+
+<div class="node server" style="top:150px; left:550px;">
+  <b>ArcGIS Server</b><br>
+  Image + DataStore<br>Monitor
+</div>
+
+<div class="node nas" style="top:320px; left:800px;">
+  <b>NAS</b><br>60TB Storage
+</div>
+
+<div class="node vdi" style="top:500px; left:300px; width:500px;">
+  <b>VDI / AI Server</b><br>
+  768GB RAM | 128 Core<br>
+  48GB GPU L40S
+</div>
+
+</div>
+
+</body>
+</html>
