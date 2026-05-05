@@ -1,135 +1,163 @@
-
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DEV Architecture</title>
+<title>ArcGIS Architecture</title>
+</head>
+<body>
 
-<style>
-body {
-  margin: 0;
+<h1>ArcGIS Enterprise Architecture</h1>
+
+<div class="tabs">
+  <button onclick="showTab('prod')">Production</button>
+  <button onclick="showTab('preprod')">Pre-Prod</button>
+  <button onclick="showTab('dev')">Dev</button>
+</div>
+
+<div id="prod" class="tab active">
+  <div class="diagram">
+
+    <!-- LEFT SIDE -->
+    <div class="node internet">🌐 Internet</div>
+    <div class="node firewall">🔥 Firewall</div>
+
+    <!-- MAIN STACK -->
+    <div class="node web">Web Server<br>443</div>
+    <div class="node portal">Portal<br>7443</div>
+    <div class="node server">ArcGIS Server<br>6443</div>
+    <div class="node datastore">DataStore<br>2443</div>
+    <div class="node db">RDBMS</div>
+
+    <!-- BOTTOM -->
+    <div class="node nas">NAS</div>
+    <div class="node vdi">VDI Machines</div>
+    <div class="node users">Users</div>
+
+    <!-- CONNECTION LINES -->
+    <svg class="lines">
+      <line x1="50" y1="120" x2="150" y2="120"/>
+      <line x1="150" y1="120" x2="300" y2="120"/>
+      <line x1="300" y1="120" x2="450" y2="120"/>
+      <line x1="450" y1="120" x2="600" y2="120"/>
+      <line x1="600" y1="120" x2="750" y2="120"/>
+
+      <line x1="450" y1="120" x2="450" y2="250"/>
+      <line x1="450" y1="250" x2="750" y2="250"/>
+    </svg>
+
+  </div>
+</div>
+
+<div id="preprod" class="tab">
+  <div class="simple">Pre-Prod Environment (same structure)</div>
+</div>
+
+<div id="dev" class="tab">
+  <div class="simple">Dev Environment (combined services)</div>
+</div>
+
+
+  <style>  body {
   font-family: Arial;
-  background: #2e2a3b;
+  background: #0f172a;
   color: white;
-  overflow-x: hidden;
+  text-align: center;
 }
 
 h1 {
-  text-align: center;
-  padding: 20px;
+  margin: 20px;
 }
 
-/* CANVAS AREA */
-.canvas {
+.tabs button {
+  margin: 5px;
+  padding: 10px 15px;
+  background: #1e293b;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.tabs button:hover {
+  background: #3b82f6;
+}
+
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+.diagram {
   position: relative;
-  width: 100%;
-  height: 85vh;
+  width: 1000px;
+  height: 400px;
+  margin: auto;
 }
 
-/* NODE STYLE */
 .node {
   position: absolute;
-  background: #3f3a52;
-  padding: 12px;
+  padding: 10px;
   border-radius: 10px;
-  width: 200px;
-  text-align: center;
+  background: #1e293b;
   transition: 0.3s;
+  cursor: pointer;
 }
 
 .node:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px cyan;
+  transform: scale(1.1);
+  background: #10b981;
 }
 
-/* COLORS */
-.web { border-left: 5px solid #00d4ff; }
-.portal { border-left: 5px solid #00ff9d; }
-.server { border-left: 5px solid #ffb300; }
-.db { border-left: 5px solid #ff4d4d; }
-.nas { border-left: 5px solid #8a5cff; }
-.vdi { border-left: 5px solid #00e676; }
-.users { border-left: 5px solid #ffffff; }
+/* POSITIONING */
 
-/* SVG LINES */
-svg {
+.internet { top: 100px; left: 20px; }
+.firewall { top: 100px; left: 100px; }
+
+.web { top: 100px; left: 250px; }
+.portal { top: 100px; left: 400px; }
+.server { top: 100px; left: 550px; }
+.datastore { top: 100px; left: 700px; }
+.db { top: 100px; left: 850px; }
+
+.nas { top: 250px; left: 700px; }
+.vdi { top: 250px; left: 450px; }
+.users { top: 250px; left: 250px; }
+
+.lines {
   position: absolute;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 line {
-  stroke: cyan;
+  stroke: #3b82f6;
   stroke-width: 2;
-  stroke-dasharray: 6;
+  stroke-dasharray: 5;
   animation: dash 2s linear infinite;
 }
 
 @keyframes dash {
   to {
-    stroke-dashoffset: -20;
+    stroke-dashoffset: -10;
   }
 }
-</style>
 
-</head>
+.simple {
+  margin-top: 50px;
+  font-size: 20px;
+}</style>
 
-<body>
 
-<h1>DEV ENVIRONMENT</h1>
+<script>
 
-<div class="canvas">
+function showTab(id) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
-<!-- CONNECTION LINES -->
-
-<svg>
-  <line x1="150" y1="80" x2="350" y2="180" />
-  <line x1="350" y1="180" x2="600" y2="180" />
-  <line x1="600" y1="180" x2="850" y2="180" />
-  <line x1="350" y1="180" x2="350" y2="350" />
-  <line x1="600" y1="180" x2="600" y2="350" />
-  <line x1="600" y1="350" x2="850" y2="350" />
-</svg>
-
-<!-- NODES -->
-
-<div class="node users" style="top:40px; left:50px;">
-  <b>Users</b><br>Internet
-</div>
-
-<div class="node web" style="top:150px; left:300px;">
-  <b>Web Server</b><br>
-  64GB RAM<br>16 Core<br>512 SSD
-</div>
-
-<div class="node db" style="top:150px; left:800px;">
-  <b>RDBMS</b><br>
-  128GB RAM<br>32 Core<br>1TB SSD
-</div>
-
-<div class="node portal" style="top:320px; left:300px;">
-  <b>Portal</b><br>
-  128GB RAM<br>32 Core
-</div>
-
-<div class="node server" style="top:150px; left:550px;">
-  <b>ArcGIS Server</b><br>
-  Image + DataStore<br>Monitor
-</div>
-
-<div class="node nas" style="top:320px; left:800px;">
-  <b>NAS</b><br>60TB Storage
-</div>
-
-<div class="node vdi" style="top:500px; left:300px; width:500px;">
-  <b>VDI / AI Server</b><br>
-  768GB RAM | 128 Core<br>
-  48GB GPU L40S
-</div>
-
-</div>
-
+  
+</script>
 </body>
 </html>
