@@ -2,123 +2,156 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>DEV Architecture</title>
+<title>ArcGIS Architecture</title>
 
 <style>
 body {
-  margin: 0;
   font-family: Arial;
-  background: #2e2a3b;
+  background: #0f172a;
   color: white;
-  overflow-x: hidden;
-}
-
-h1 {
   text-align: center;
-  padding: 20px;
 }
 
-.canvas {
-  position: relative;
-  width: 100%;
-  height: 85vh;
-}
+h1 { margin: 20px; }
 
-.node {
-  position: absolute;
-  background: #3f3a52;
-  padding: 12px;
-  border-radius: 10px;
-  width: 200px;
-  text-align: center;
+.tabs button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
   transition: 0.3s;
 }
+.tabs button:hover { background: #3b82f6; }
 
-.node:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px cyan;
+.tab { display: none; }
+.tab.active { display: block; }
+
+.diagram {
+  position: relative;
+  width: 1100px;
+  height: 500px;
+  margin: auto;
 }
 
-.web { border-left: 5px solid #00d4ff; }
-.portal { border-left: 5px solid #00ff9d; }
-.server { border-left: 5px solid #ffb300; }
-.db { border-left: 5px solid #ff4d4d; }
-.nas { border-left: 5px solid #8a5cff; }
-.vdi { border-left: 5px solid #00e676; }
-.users { border-left: 5px solid #ffffff; }
+/* NODES */
+.node {
+  position: absolute;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #1e293b;
+  transition: 0.3s;
+  cursor: pointer;
+  font-size: 12px;
+}
+.node:hover {
+  transform: scale(1.1);
+  background: #10b981;
+}
 
-svg {
+/* POSITIONS */
+.internet { top: 150px; left: 20px; }
+.firewall { top: 150px; left: 100px; }
+
+.web { top: 80px; left: 300px; }
+.portal { top: 160px; left: 300px; }
+.server { top: 240px; left: 300px; }
+.datastore { top: 320px; left: 300px; }
+.db { top: 400px; left: 300px; }
+
+.nas { top: 400px; left: 700px; }
+.vdi { top: 400px; left: 500px; }
+.users { top: 400px; left: 900px; }
+
+/* SVG lines */
+.lines {
   position: absolute;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 line {
-  stroke: cyan;
+  stroke: #3b82f6;
   stroke-width: 2;
   stroke-dasharray: 6;
   animation: dash 2s linear infinite;
 }
 
 @keyframes dash {
-  to {
-    stroke-dashoffset: -20;
-  }
+  to { stroke-dashoffset: -12; }
 }
+
 </style>
 </head>
 
 <body>
 
-<h1>DEV ENVIRONMENT</h1>
+<h1>ArcGIS Enterprise Architecture</h1>
 
-<div class="canvas">
-
-<svg>
-  <line x1="150" y1="80" x2="350" y2="180" />
-  <line x1="350" y1="180" x2="600" y2="180" />
-  <line x1="600" y1="180" x2="850" y2="180" />
-  <line x1="350" y1="180" x2="350" y2="350" />
-  <line x1="600" y1="180" x2="600" y2="350" />
-  <line x1="600" y1="350" x2="850" y2="350" />
-</svg>
-
-<div class="node users" style="top:40px; left:50px;">
-  <b>Users</b><br>Internet
+<div class="tabs">
+  <button onclick="showTab('prod')">Production</button>
+  <button onclick="showTab('preprod')">Pre-Prod</button>
+  <button onclick="showTab('dev')">Dev</button>
 </div>
 
-<div class="node web" style="top:150px; left:300px;">
-  <b>Web Server</b><br>
-  64GB RAM<br>16 Core<br>512 SSD
+<!-- PRODUCTION -->
+<div id="prod" class="tab active">
+  <div class="diagram">
+
+    <!-- LEFT -->
+    <div class="node internet">🌐 Internet</div>
+    <div class="node firewall">🔥 Firewall</div>
+
+    <!-- STACK -->
+    <div class="node web">Web Server<br>443</div>
+    <div class="node portal">Portal<br>7443</div>
+    <div class="node server">ArcGIS Server<br>6443</div>
+    <div class="node datastore">DataStore<br>2443</div>
+    <div class="node db">RDBMS</div>
+
+    <!-- BOTTOM -->
+    <div class="node nas">NAS</div>
+    <div class="node vdi">VDI</div>
+    <div class="node users">Users</div>
+
+    <!-- CONNECTIONS -->
+    <svg class="lines">
+      <!-- left flow -->
+      <line x1="70" y1="170" x2="120" y2="170"/>
+      <line x1="120" y1="170" x2="300" y2="100"/>
+
+      <!-- vertical stack -->
+      <line x1="350" y1="100" x2="350" y2="180"/>
+      <line x1="350" y1="180" x2="350" y2="260"/>
+      <line x1="350" y1="260" x2="350" y2="340"/>
+      <line x1="350" y1="340" x2="350" y2="420"/>
+
+      <!-- bottom connections -->
+      <line x1="350" y1="420" x2="550" y2="420"/>
+      <line x1="550" y1="420" x2="750" y2="420"/>
+      <line x1="750" y1="420" x2="950" y2="420"/>
+    </svg>
+
+  </div>
 </div>
 
-<div class="node db" style="top:150px; left:800px;">
-  <b>RDBMS</b><br>
-  128GB RAM<br>32 Core<br>1TB SSD
+<!-- PREPROD -->
+<div id="preprod" class="tab">
+  <div style="margin-top:80px;">Pre-Prod Structure Same as Production (Scaled + Monitor + Image Server)</div>
 </div>
 
-<div class="node portal" style="top:320px; left:300px;">
-  <b>Portal</b><br>
-  128GB RAM<br>32 Core
+<!-- DEV -->
+<div id="dev" class="tab">
+  <div style="margin-top:80px;">Dev Environment (Combined Server + DataStore + DB)</div>
 </div>
 
-<div class="node server" style="top:150px; left:550px;">
-  <b>ArcGIS Server</b><br>
-  Image + DataStore<br>Monitor
-</div>
-
-<div class="node nas" style="top:320px; left:800px;">
-  <b>NAS</b><br>60TB Storage
-</div>
-
-<div class="node vdi" style="top:500px; left:300px; width:500px;">
-  <b>VDI / AI Server</b><br>
-  768GB RAM | 128 Core<br>
-  48GB GPU L40S
-</div>
-
-</div>
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+</script>
 
 </body>
 </html>
